@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bity | Exchange</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="node_modules/@bity/styles/bity.css"
+    />
+    <link
+      rel="stylesheet"
+      href="node_modules/@bity/preact-exchange-client/index.css"
+    />
+    <link rel="stylesheet" type="text/css" href="index.css" />
+
+    <script src="node_modules/preact/dist/preact.min.js"></script>
+    <script src="/config.js"></script>
+    <script src="node_modules/@bity/preact-exchange-client/bity-preact-exchange-client.js"></script>
+  </head>
+  <body>
+    <noscript
+      >Sorry, the exchange requires JavaScript due to complex user and server
+      interactions! If this isn't great for you, please look into using our API:
+      https://doc.bity.com</noscript
+    >
+
+    <div id="root"></div>
+
+    <script>
+      window.addEventListener("load", function () {
+        // Prevent Google Translate from creating duplicate text.
+        const ib = Element.prototype.insertBefore;
+        Element.prototype.insertBefore = function (child, ref) {
+          if (ref && ref.localName === "font") {
+            child.innerText = ref.innerText;
+            return;
+          }
+          return ib.apply(this, arguments);
+        };
+
+        var root = document.querySelector("#root");
+        var finalConfig = Object.assign(
+          {},
+          window.bityConfiguration.exchangeClient
+        );
+
+        finalConfig.shouldAskForLogin = () => false;
+        finalConfig.oauthConfig.onAccessTokenExpiry = (r) =>
+          window.parent.postMessage("badAuth", "*");
+        finalConfig.oauthConfig.onInvalidGrant = (r) =>
+          window.parent.postMessage("badAuth", "*");
+
+        preact.render(
+          preact.h(BityPreactExchangeClient.default, finalConfig),
+          root
+        );
+      });
+    </script>
+  </body>
+</html>
