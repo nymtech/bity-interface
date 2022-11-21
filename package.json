@@ -9,7 +9,7 @@
   "author": "",
   "license": "MPL-2.0",
   "dependencies": {
-    "@bity/preact-exchange-client": "^1.24.8",
+    "@bity/preact-exchange-client": "^1.24.9",
     "@bity/api": "^3.7.9",
     "@bity/styles": "^3.6.7",
     "preact": "^8.5.3"
