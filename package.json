@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
   "author": "",
   "license": "MPL-2.0",
   "dependencies": {
-    "@bity/preact-exchange-client": "^1.24.9",
     "@bity/api": "^3.7.9",
+    "@bity/preact-exchange-client": "^1.24.9",
     "@bity/styles": "^3.6.7",
+    "dotenv": "^16.0.3",
     "preact": "^8.5.3"
   }
 }
