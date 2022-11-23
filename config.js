@@ -24,7 +24,10 @@ module.exports = {
     authorizationUrl: "https://connect.bity.com/oauth2/auth",
     tokenUrl: "https://connect.bity.com/oauth2/token",
     clientId: "",
-    scopes: ["https://auth.bity.com/scopes/exchange.place"],
+    scopes: [
+      "https://auth.bity.com/scopes/exchange.place",
+      "https://auth.bity.com/scopes/exchange.history",
+    ],
     redirectUrl: "https://buy.nymtech.net/",
   },
 };
