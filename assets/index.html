@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nym Exchange</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" type="text/css" href="/assets/bity.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/index.css" />
+
+    <script src="/assets/preact.min.js"></script>
+    <script src="/config.js"></script>
+    <script src="/assets/bity-preact-exchange-client.js"></script>
+  </head>
+  <body>
+    <noscript>
+      Sorry, the exchange requires JavaScript due to complex user and server
+      interactions! If this isn't great for you, please look into using Bity
+      API: https://doc.bity.com
+    </noscript>
+
+    <div id="root"></div>
+
+    <script>
+      window.addEventListener("load", function () {
+        // Prevent Google Translate from creating duplicate text.
+        const ib = Element.prototype.insertBefore;
+        Element.prototype.insertBefore = function (child, ref) {
+          if (ref && ref.localName === "font") {
+            child.innerText = ref.innerText;
+            return;
+          }
+          return ib.apply(this, arguments);
+        };
+
+        var root = document.querySelector("#root");
+        var finalConfig = Object.assign(
+          {},
+          window.bityConfiguration.exchangeClient
+        );
+
+        finalConfig.shouldAskForLogin = () => false;
+        finalConfig.oauthConfig.onAccessTokenExpiry = (r) =>
+          window.parent.postMessage("badAuth", "*");
+        finalConfig.oauthConfig.onInvalidGrant = (r) =>
+          window.parent.postMessage("badAuth", "*");
+
+        preact.render(
+          preact.h(BityPreactExchangeClient.default, finalConfig),
+          root
+        );
+      });
+    </script>
+  </body>
+</html>
