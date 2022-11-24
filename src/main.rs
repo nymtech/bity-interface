@@ -1,12 +1,14 @@
 mod error;
+mod ip_check;
 mod shutdown;
 
 use anyhow::Context;
 use axum::http::{header, StatusCode};
 use axum::response::IntoResponse;
 use axum::routing::{get, get_service};
-use axum::{Extension, Router};
+use axum::{middleware, Extension, Router};
 use dotenv::dotenv;
+use ip_check::ip_check;
 use maxminddb::Reader;
 use shutdown::shutdown_signal;
 use std::{env, io};
@@ -67,14 +69,18 @@ async fn main() -> anyhow::Result<()> {
         bity_config,
     });
 
+    // Router setup
     let serve_dir = ServeDir::new("assets").not_found_service(ServeFile::new("assets/index.html"));
-    let serve_dir = get_service(serve_dir).handle_error(handle_error);
+    let serve_dir = get_service(serve_dir)
+        .handle_error(handle_error)
+        .route_layer(middleware::from_fn_with_state(state.clone(), ip_check));
 
     let app = Router::new()
         .route("/config.js", get(get_config))
         .nest_service("/assets", serve_dir.clone())
         .fallback_service(serve_dir)
         .layer(TraceLayer::new_for_http())
+        .route_layer(middleware::from_fn_with_state(state.clone(), ip_check))
         .layer(Extension(state));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], port));
