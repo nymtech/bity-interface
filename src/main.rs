@@ -85,11 +85,11 @@ async fn main() -> anyhow::Result<()> {
     info!("Serving files from {} directory", assets_path);
 
     // Router setup
-    // index.html is located in $ASSETS_PATH directory
+    // index.html is located in $ASSETS_DIRECTORY
     // GET /            serves index.html
-    // GET /assets/*    serves the corresponding static file from $ASSETS_PATH/*
+    // GET /assets/*    serves the corresponding static file from $ASSETS_DIRECTORY/*
     // GET /config.js   replies with a JS script containing Bity config
-    // GET /403.html    serves $ASSETS_PATH/403.html
+    // GET /403.html    serves $ASSETS_DIRECTORY/403.html
     // GET /*           fallback to /assets/*
     // GET /assets/file_doesnt_exist fallback to index.html (no 404)
     let serve_dir = ServeDir::new(&assets_path)
