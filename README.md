@@ -1,6 +1,7 @@
 # Nym Exchange Interface
 
 Web exchange interface built with [Bity](https://bity.com/) API.
+The server side is built with [axum](https://github.com/tokio-rs/axum).
 
 ## Install
 
@@ -32,3 +33,15 @@ cargo run
 ```shell
 cargo build --release
 ```
+
+## Production
+
+The binary server needs access to:
+
+- `assets` directory containing the website static files
+- Bity config file `bity_config.json`
+- GeoLite2 country database file
+
+Paths to these files can be provided respectively by the following
+env variables: `ASSETS_DIRECTORY`, `BITY_CONFIG_PATH` and
+`GEOIP_DB_PATH`.
