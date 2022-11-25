@@ -52,7 +52,9 @@ async fn main() -> anyhow::Result<()> {
         );
         DEFAULT_BITY_CONFIG_PATH.to_owned()
     });
-    let bity_config = fs::read_to_string(bity_config_path).await?;
+    let bity_config = fs::read_to_string(&bity_config_path)
+        .await
+        .with_context(|| format!("Fail to read {}", &bity_config_path))?;
 
     let db_path = env::var("GEOIP_DB_PATH").unwrap_or_else(|e| {
         warn!(
