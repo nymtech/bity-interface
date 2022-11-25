@@ -77,10 +77,13 @@ async fn main() -> anyhow::Result<()> {
 
     let app = Router::new()
         .route("/config.js", get(get_config))
+        .route(
+            "/403.html",
+            get_service(ServeFile::new("assets/403.html")).handle_error(handle_error),
+        )
         .nest_service("/assets", serve_dir.clone())
         .fallback_service(serve_dir)
         .layer(TraceLayer::new_for_http())
-        .route_layer(middleware::from_fn_with_state(state.clone(), ip_check))
         .layer(Extension(state));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], port));

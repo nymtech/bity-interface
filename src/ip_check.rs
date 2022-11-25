@@ -3,7 +3,7 @@ use std::{net::IpAddr, sync::Arc};
 use axum::{
     http::{HeaderMap, Request, StatusCode},
     middleware::Next,
-    response::Response,
+    response::{Redirect, Response},
     Extension,
 };
 use maxminddb::geoip2::Country;
@@ -19,7 +19,7 @@ pub async fn ip_check<B>(
     headers: HeaderMap,
     req: Request<B>,
     next: Next<B>,
-) -> Result<Response, (StatusCode, String)> {
+) -> Result<Response, Redirect> {
     let ip_header = headers
         .get(IP_HEADER)
         .and_then(|header| header.to_str().ok());
@@ -64,7 +64,8 @@ pub async fn ip_check<B>(
     // Finally if IP is located in US, reject the request
     if iso_alpha2 == "US" {
         info!("US IP detected, request kicked");
-        return Err((StatusCode::FORBIDDEN, "US IP detected".into()));
+        return Err(Redirect::to("/403.html"));
+        // return Err((StatusCode::FORBIDDEN, "US IP detected".into()));
     }
     Ok(next.run(req).await)
 }

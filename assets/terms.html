@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.svg" />
+    <title>Nym Exchange</title>
+  </head>
+  <body>
+    <h1>Buy NYM Terms and conditions</h1>
+    <p>A usual very long very boring terms text...</p>
+    <div>
+      <input type="checkbox" id="accept_terms" name="accept_terms" />
+      <label for="accept_terms">I agree to the terms and conditions</label>
+    </div>
+    <div>
+      <button onclick="handleRefuse()">Decline</button>
+      <button onclick="handleAccept()">Accept</button>
+    </div>
+    <script>
+      function handleAccept() {
+        if (document.getElementById("accept_terms").checked) {
+          window.localStorage.setItem("nym_buy_terms", true);
+          window.location.href = "/";
+        }
+      }
+
+      function handleRefuse() {
+        window.localStorage.setItem("nym_buy_terms", false);
+        window.location.href = "/terms_refused.html";
+      }
+    </script>
+  </body>
+</html>

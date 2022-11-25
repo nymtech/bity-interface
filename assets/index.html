@@ -22,6 +22,12 @@
     <div id="root"></div>
 
     <script>
+      if (window.localStorage.getItem("nym_buy_terms") !== "true") {
+        window.location.href = "/terms.html";
+      }
+    </script>
+
+    <script>
       window.addEventListener("load", function () {
         // Prevent Google Translate from creating duplicate text.
         const ib = Element.prototype.insertBefore;
