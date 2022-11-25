@@ -3,10 +3,11 @@ mod ip_check;
 mod shutdown;
 
 use anyhow::Context;
+use axum::extract::State;
 use axum::http::{header, StatusCode};
 use axum::response::IntoResponse;
 use axum::routing::{get, get_service};
-use axum::{middleware, Extension, Router};
+use axum::{middleware, Router};
 use dotenv::dotenv;
 use ip_check::ip_check;
 use maxminddb::Reader;
@@ -108,7 +109,7 @@ async fn main() -> anyhow::Result<()> {
         .nest_service("/assets", serve_dir.clone())
         .fallback_service(serve_dir)
         .layer(TraceLayer::new_for_http())
-        .layer(Extension(state));
+        .with_state(state);
 
     let addr = SocketAddr::from(([127, 0, 0, 1], port));
     info!("❱ listening on {} ❰", addr);
@@ -120,7 +121,7 @@ async fn main() -> anyhow::Result<()> {
 }
 
 #[instrument(skip_all, level = "info")]
-pub async fn get_config(state: Extension<Arc<AppState>>) -> impl IntoResponse {
+pub async fn get_config(State(state): State<Arc<AppState>>) -> impl IntoResponse {
     (
         [(header::CONTENT_TYPE, "application/javascript")],
         format!(

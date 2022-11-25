@@ -1,10 +1,10 @@
 use std::{net::IpAddr, sync::Arc};
 
 use axum::{
+    extract::State,
     http::{HeaderMap, Request},
     middleware::Next,
     response::{Redirect, Response},
-    Extension,
 };
 use maxminddb::geoip2::Country;
 use tracing::{debug, error, info, instrument, warn};
@@ -15,7 +15,7 @@ const IP_HEADER: &str = "X-Real-IP";
 
 #[instrument(skip_all, level = "debug")]
 pub async fn ip_check<B>(
-    Extension(state): Extension<Arc<AppState>>,
+    State(state): State<Arc<AppState>>,
     headers: HeaderMap,
     req: Request<B>,
     next: Next<B>,
