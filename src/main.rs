@@ -16,11 +16,12 @@ use std::{net::SocketAddr, sync::Arc};
 use tokio::fs;
 use tower_http::services::{ServeDir, ServeFile};
 use tower_http::trace::TraceLayer;
-use tracing::{info, instrument, warn};
+use tracing::{debug, info, instrument, warn};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-const DEFAULT_DATABASE_PATH: &str = "./geo_ip/GeoLite2-Country.mmdb";
-const DEFAULT_BITY_CONFIG_PATH: &str = "./bity_config.json";
+const DEFAULT_DATABASE_PATH: &str = "geo_ip/GeoLite2-Country.mmdb";
+const DEFAULT_BITY_CONFIG_PATH: &str = "bity_config.json";
+const DEFAULT_ASSETS_DIRECTORY: &str = "assets";
 
 #[derive(Debug)]
 pub struct AppState {
@@ -52,6 +53,7 @@ async fn main() -> anyhow::Result<()> {
         );
         DEFAULT_BITY_CONFIG_PATH.to_owned()
     });
+    debug!("Reading Bity config from {}", &bity_config_path);
     let bity_config = fs::read_to_string(&bity_config_path)
         .await
         .with_context(|| format!("Fail to read {}", &bity_config_path))?;
@@ -63,6 +65,7 @@ async fn main() -> anyhow::Result<()> {
         );
         DEFAULT_DATABASE_PATH.to_owned()
     });
+    debug!("Loading GeoLite2 database {}", &db_path);
     let reader = Reader::open_readfile(&db_path)
         .with_context(|| format!("Fail to open GeoLite2 database file {}", db_path))?;
 
@@ -71,8 +74,26 @@ async fn main() -> anyhow::Result<()> {
         bity_config,
     });
 
+    let mut assets_path = env::var("ASSETS_DIRECTORY").unwrap_or_else(|e| {
+        warn!(
+            "Env variable ASSETS_DIRECTORY is not set: {} - Fallback to {}",
+            e, DEFAULT_ASSETS_DIRECTORY
+        );
+        DEFAULT_ASSETS_DIRECTORY.to_owned()
+    });
+    assets_path = assets_path.trim_end_matches('/').into();
+    info!("Serving files from {} directory", assets_path);
+
     // Router setup
-    let serve_dir = ServeDir::new("assets").not_found_service(ServeFile::new("assets/index.html"));
+    // index.html is located in $ASSETS_PATH directory
+    // GET /            serves index.html
+    // GET /assets/*    serves the corresponding static file from $ASSETS_PATH/*
+    // GET /config.js   replies with a JS script containing Bity config
+    // GET /403.html    serves $ASSETS_PATH/403.html
+    // GET /*           fallback to /assets/*
+    // GET /assets/file_doesnt_exist fallback to index.html (no 404)
+    let serve_dir = ServeDir::new(&assets_path)
+        .not_found_service(ServeFile::new(format!("{}/index.html", assets_path)));
     let serve_dir = get_service(serve_dir)
         .handle_error(handle_error)
         .route_layer(middleware::from_fn_with_state(state.clone(), ip_check));
@@ -81,7 +102,8 @@ async fn main() -> anyhow::Result<()> {
         .route("/config.js", get(get_config))
         .route(
             "/403.html",
-            get_service(ServeFile::new("assets/403.html")).handle_error(handle_error),
+            get_service(ServeFile::new(format!("{}/403.html", assets_path)))
+                .handle_error(handle_error),
         )
         .nest_service("/assets", serve_dir.clone())
         .fallback_service(serve_dir)

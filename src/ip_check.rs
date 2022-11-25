@@ -1,7 +1,7 @@
 use std::{net::IpAddr, sync::Arc};
 
 use axum::{
-    http::{HeaderMap, Request, StatusCode},
+    http::{HeaderMap, Request},
     middleware::Next,
     response::{Redirect, Response},
     Extension,
