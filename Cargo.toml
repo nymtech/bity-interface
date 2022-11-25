@@ -4,11 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-axum = { version = "0.6.0", features = ["json", "headers"] }
+axum = { version = "0.6.0", features = ["headers"] }
 tokio = { version = "1.0", features = ["full"] }
-tower-http = { version = "0.3.0", features = ["cors", "trace", "auth", "fs"] }
+tower-http = { version = "0.3.0", features = ["cors", "trace", "fs"] }
 serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.0", features = ['env-filter'] }
 dotenv = "0.15.0"
