@@ -10,6 +10,7 @@
   }
 
 .termsContainer {
+    position: relative;
     margin: auto;
     display: flex;
     flex-direction: column;
@@ -21,7 +22,7 @@
 }
 
 .termsTextWrapper {
-    height: 550px;
+    height: 350px;
     overflow-y: scroll;
 }
 
@@ -31,7 +32,7 @@
     background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) -85%, #FFFFFF 100%);
     width: 100%;
     height: 40px;
-    bottom: 225px;
+    bottom: 205px;
 }
 
 .termsCheckWrapper {
@@ -88,7 +89,7 @@
     color: white;
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 768px) and (min-height: 500px)  {
     .termsContainer {
         position: absolute;
         left: 50%;
@@ -97,19 +98,28 @@
         width: 650px;
         padding: 24px;
     }
-    .termsTextWrapper::after {
-        bottom: 150px;
-    }
-    .termsBtnWrapper {
-        flex-direction: row;
-    }
+
     .termsTextWrapper {
         height: 400px;
+    }
+
+    .termsTextWrapper::after {
+        bottom: 150px;
     }
 }
 
 @media (max-height: 500px) {
     .termsTextWrapper {
         height: 180px;
+    }
+
+    .termsTextWrapper::after {
+        bottom: 130px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .termsBtnWrapper {
+        flex-direction: row;
     }
 }
