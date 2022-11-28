@@ -1,18 +1,18 @@
 .termsBody {
     font-family: "Open Sans", sans-serif;
-    padding: 40px;
-
-    position: absolute;
-    top: 50%;
-    transform: translate(0, -50%);
-    margin: auto;
-
-    display: flex;
-    flex-direction: column;
+    margin: 24px;
 }
 
+.bity-svg {
+    width: 100px;
+    height: 40px;
+    background: url("images/bity.svg") no-repeat center center;
+  }
+
 .termsContainer {
-    position: relative;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .termsTitle {
@@ -23,7 +23,6 @@
 .termsTextWrapper {
     height: 550px;
     overflow-y: scroll;
-    margin-bottom: 12px;
 }
 
 .termsTextWrapper::after {
@@ -90,14 +89,16 @@
 }
 
 @media only screen and (min-width: 768px) {
-    .termsBody {
+    .termsContainer {
+        position: absolute;
         left: 50%;
+        top: 50%;
         transform: translate(-50%, -50%);
         width: 650px;
         padding: 24px;
     }
     .termsTextWrapper::after {
-        bottom: 142px;
+        bottom: 150px;
     }
     .termsBtnWrapper {
         flex-direction: row;
