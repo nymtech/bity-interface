@@ -1,0 +1,27 @@
+.markdown-body {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  ul {
+    list-style-type: lower-alpha;
+  }
+  ul > li > ul {
+    list-style-type: circle
+  }
+  h2 {
+    font-weight: 600;
+    margin-left: 24px;
+  }
+  h3 {
+    font-size: 12px;
+    font-weight: 400;
+    color: #7D7D7D;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(141, 147, 153, 0.2);
+  }
+  h4 {
+    font-size: 11px;
+    font-weight: 400;
+  }

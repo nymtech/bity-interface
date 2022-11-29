@@ -13,35 +13,7 @@
       <h1 class="title">Buy NYM Terms and conditions</h1>
       <div class="terms_md-wrapper">
         <zero-md class="terms-md" src="/assets/terms.md"><template>
-          <style>
-            .markdown-body {
-              font-family: "Open Sans", sans-serif;
-              font-size: 14px;
-              font-weight: 400;
-            }
-            ul {
-              list-style-type: lower-alpha;
-            }
-            ul > li > ul {
-              list-style-type: circle
-            }
-            h2 {
-              font-weight: 600;
-              margin-left: 24px;
-            }
-            h3 {
-              font-size: 12px;
-              font-weight: 400;
-              color: #7D7D7D;
-              margin-bottom: 24px;
-              padding-bottom: 24px;
-              border-bottom: 1px solid rgba(141, 147, 153, 0.2);
-            }
-            h4 {
-              font-size: 11px;
-              font-weight: 400;
-            }
-          </style>
+          <link rel="stylesheet" href="markdown-styles.css" />
         </template></zero-md>
       </div>
       <div class="checkbox-wrapper">
@@ -57,7 +29,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@2/webcomponents-loader.min.js"></script>
 
     <!-- Load the element definition -->
-    <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@1/src/zero-md.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js"></script>
     <script>
       function handleAccept() {
         if (document.getElementById("accept_terms").checked) {
