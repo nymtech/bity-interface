@@ -1,3 +1,4 @@
 /target
 .env
 /geo_ip
+bity_config.json
