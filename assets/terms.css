@@ -1,4 +1,4 @@
-.termsBody {
+.body {
     font-family: "Open Sans", sans-serif;
     margin: 24px;
 }
@@ -9,24 +9,24 @@
     background: url("images/bity.svg") no-repeat center center;
 }
 
-.termsContainer {
+.terms-container {
     position: relative;
     margin: auto;
     display: flex;
     flex-direction: column;
 }
 
-.termsTitle {
+.title {
     font-size: 20px;
     font-weight: 600;
 }
 
-.termsTextWrapper {
+.terms_md-wrapper {
     height: 350px;
     overflow-y: scroll;
 }
 
-.termsTextWrapper::after {
+.terms_md-wrapper::after {
     content: '';
     position: absolute;
     background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) -85%, #FFFFFF 100%);
@@ -35,12 +35,12 @@
     bottom: 205px;
 }
 
-.termsCheckWrapper {
+.checkbox-wrapper {
     display: flex;
     align-items: center;
 }
 
-.termsInput {
+.checkbox {
     width: 19px;
     height: 19px;
     left: 24px;
@@ -51,11 +51,11 @@
     border-radius: 4px;
 }
 
-.termslabel {
+.checkbox-label {
     display: inline;
 }
 
-.termsBtnWrapper {
+.buttons-wrapper {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -63,7 +63,7 @@
 }
 
  
-.termsBtn, .termsBtnBlue {
+.button, .buttonBlue {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -79,18 +79,18 @@
     border: none;
     cursor: pointer;
 }
-.termsBtn {
+.button {
     border: 2px solid #121726;
     background-color: transparent;
 }
 
-.termsBtnBlue {
+.buttonBlue {
     background: #0062FF;
     color: white;
 }
 
 @media only screen and (min-width: 768px) and (min-height: 500px)  {
-    .termsContainer {
+    .terms-container {
         position: absolute;
         left: 50%;
         top: 50%;
@@ -99,27 +99,27 @@
         padding: 24px;
     }
 
-    .termsTextWrapper {
+    .terms_md-wrapper {
         height: 400px;
     }
 
-    .termsTextWrapper::after {
+    .terms_md-wrapper::after {
         bottom: 150px;
     }
 }
 
 @media (max-height: 500px) {
-    .termsTextWrapper {
+    .terms_md-wrapper {
         height: 180px;
     }
 
-    .termsTextWrapper::after {
+    .terms_md-wrapper::after {
         bottom: 130px;
     }
 }
 
 @media only screen and (min-width: 768px) {
-    .termsBtnWrapper {
+    .buttons-wrapper {
         flex-direction: row;
     }
 }

@@ -7,11 +7,11 @@
     <link rel="stylesheet" type="text/css" href="/assets/terms.css" />
     <title>Nym Exchange</title>
   </head>
-  <body class="termsBody">
+  <body class="body">
     <div class="bity-svg" alt="bity"></div>
-    <div class="termsContainer">
-      <h1 class="termsTitle">Buy NYM Terms and conditions</h1>
-      <div class="termsTextWrapper">
+    <div class="terms-container">
+      <h1 class="title">Buy NYM Terms and conditions</h1>
+      <div class="terms_md-wrapper">
         <zero-md class="terms-md" src="/assets/terms.md"><template>
           <style>
             .markdown-body {
@@ -41,13 +41,13 @@
           </style>
         </template></zero-md>
       </div>
-      <div class="termsCheckWrapper">
-        <input class="termsInput" type="checkbox" id="accept_terms" name="accept_terms" />
-        <p class="termslabel" for="accept_terms">I agree to the terms and conditions</p>
+      <div class="checkbox-wrapper">
+        <input class="checkbox" type="checkbox" id="accept_terms" name="accept_terms"/>
+        <p class="checkbox-label" for="accept_terms">I agree to the terms and conditions</p>
       </div>
-      <div class="termsBtnWrapper">
-        <button class="termsBtn" onclick="handleRefuse()">Decline</button>
-        <button class="termsBtnBlue" onclick="handleAccept()">Accept</button>
+      <div class="buttons-wrapper">
+        <button class="button" onclick="handleRefuse()">Decline</button>
+        <button class="buttonBlue" onclick="handleAccept()">Accept</button>
       </div>
     </div>
     <!-- Lightweight client-side loader that feature-detects and load polyfills only when necessary -->
