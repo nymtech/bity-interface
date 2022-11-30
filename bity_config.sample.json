@@ -1,5 +1,5 @@
 {
-  "clientId": "",
+  "clientId": "_Nym_client_ID_",
   "exchangeApiUrl": "https://exchange.api.bity.com",
   "legacyV2ApiUrl": "",
   "bityDashboardUrl": "",
@@ -14,7 +14,7 @@
   "oauthConfig": {
     "authorizationUrl": "https://connect.bity.com/oauth2/auth",
     "tokenUrl": "https://connect.bity.com/oauth2/token",
-    "clientId": "",
+    "clientId": "_Nym_client_ID_",
     "scopes": [
       "https://auth.bity.com/scopes/exchange.place",
       "https://auth.bity.com/scopes/exchange.history"
