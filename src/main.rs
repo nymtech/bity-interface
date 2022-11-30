@@ -30,6 +30,7 @@ use crate::utils::read_env_var;
 const DEFAULT_DATABASE_PATH: &str = "geo_ip/GeoLite2-Country.mmdb";
 const DEFAULT_BITY_CONFIG_PATH: &str = "bity_config.json";
 const DEFAULT_ASSETS_DIRECTORY: &str = "assets";
+const LOG_LEVELS: &str = "nym_exchange=debug,tower_http=debug";
 
 #[derive(Debug)]
 pub struct AppState {
@@ -44,7 +45,14 @@ async fn main() -> anyhow::Result<()> {
     // Tracing init
     tracing_subscriber::registry()
         .with(tracing_subscriber::EnvFilter::new(
-            env::var("RUST_LOG").unwrap_or_else(|_| "nym_exchange=debug,tower_http=debug".into()),
+            env::var("RUST_LOG")
+                .map(|v| {
+                    if v.is_empty() {
+                        return LOG_LEVELS.into();
+                    }
+                    v
+                })
+                .unwrap_or_else(|_| LOG_LEVELS.into()),
         ))
         .with(tracing_subscriber::fmt::layer())
         .init();
@@ -100,7 +108,7 @@ async fn main() -> anyhow::Result<()> {
         .layer(TraceLayer::new_for_http())
         .with_state(state);
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], port));
+    let addr = SocketAddr::from(([0, 0, 0, 0], port));
     info!("❱ listening on {} ❰", addr);
     axum::Server::bind(&addr)
         .serve(app.into_make_service())

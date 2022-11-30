@@ -1,4 +1,23 @@
 services:
+  server:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+      args:
+        - port=${PORT}
+    image: nym-exchange-server
+    restart: unless-stopped
+    environment:
+      RUST_LOG: ${RUST_LOG}
+    ports:
+      - "${PORT}:${PORT}"
+    volumes:
+      - ${GEOIP_DB_DIRECTORY}/GeoLite2-Country.mmdb:/opt/server/geo_ip/db.mmdb
+      - ./assets:/opt/server/assets
+      - ./bity_config.json:/opt/server/bity/config.json
+    networks:
+      - nym-bity
+
   geoipupdate:
     image: maxmindinc/geoipupdate
     restart: unless-stopped
