@@ -2,15 +2,35 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="/assets/favicon.svg" />
     <link rel="stylesheet" type="text/css" href="/assets/terms_refused.css" />
     <title>Nym Exchange</title>
+    <!-- Matomo -->
+    <script>
+      var _paq = (window._paq = window._paq || []);
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(["trackPageView"]);
+      _paq.push(["enableLinkTracking"]);
+      (function () {
+        var u = "https://nymtech.net/matomo/";
+        _paq.push(["setTrackerUrl", u + "matomo.php"]);
+        _paq.push(["setSiteId", "4"]);
+        var d = document,
+          g = d.createElement("script"),
+          s = d.getElementsByTagName("script")[0];
+        g.async = true;
+        g.src = u + "matomo.js";
+        s.parentNode.insertBefore(g, s);
+      })();
+    </script>
   </head>
   <body class="body">
     <div class="bity-svg" alt="bity"></div>
     <h1 class="title">Can't proceed</h1>
-    <p class="text">Sorry you can only proceed if you agree to the terms and conditions</p>
+    <p class="text">
+      Sorry you can only proceed if you agree to the terms and conditions
+    </p>
     <a class="link" href="/terms.html">Go back to terms and conditions</a>
   </body>
 </html>

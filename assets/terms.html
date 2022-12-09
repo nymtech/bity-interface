@@ -2,23 +2,49 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="/assets/favicon.svg" />
     <link rel="stylesheet" type="text/css" href="/assets/terms.css" />
     <title>Nym Exchange</title>
+    <!-- Matomo -->
+    <script>
+      var _paq = (window._paq = window._paq || []);
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(["trackPageView"]);
+      _paq.push(["enableLinkTracking"]);
+      (function () {
+        var u = "https://nymtech.net/matomo/";
+        _paq.push(["setTrackerUrl", u + "matomo.php"]);
+        _paq.push(["setSiteId", "4"]);
+        var d = document,
+          g = d.createElement("script"),
+          s = d.getElementsByTagName("script")[0];
+        g.async = true;
+        g.src = u + "matomo.js";
+        s.parentNode.insertBefore(g, s);
+      })();
+    </script>
   </head>
   <body class="body">
     <div class="bity-svg" alt="bity"></div>
     <div class="terms-container">
       <h1 class="title">Buy NYM Terms and conditions</h1>
       <div class="terms_md-wrapper">
-        <zero-md class="terms-md" src="/assets/terms.md"><template>
-          <link rel="stylesheet" href="markdown-styles.css" />
-        </template></zero-md>
+        <zero-md class="terms-md" src="/assets/terms.md"
+          ><template>
+            <link rel="stylesheet" href="markdown-styles.css" /> </template
+        ></zero-md>
       </div>
       <div class="checkbox-wrapper">
-        <input class="checkbox" type="checkbox" id="accept_terms" name="accept_terms"/>
-        <p class="checkbox-label" for="accept_terms">I agree to the terms and conditions</p>
+        <input
+          class="checkbox"
+          type="checkbox"
+          id="accept_terms"
+          name="accept_terms"
+        />
+        <p class="checkbox-label" for="accept_terms">
+          I agree to the terms and conditions
+        </p>
       </div>
       <div class="buttons-wrapper">
         <button class="button" onclick="handleRefuse()">Decline</button>
@@ -29,7 +55,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@2/webcomponents-loader.min.js"></script>
 
     <!-- Load the element definition -->
-    <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js"></script>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js"
+    ></script>
     <script>
       function handleAccept() {
         if (document.getElementById("accept_terms").checked) {
