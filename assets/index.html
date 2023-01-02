@@ -57,10 +57,22 @@
           return ib.apply(this, arguments);
         };
 
-        var root = document.querySelector("#root");
+        const params = new URLSearchParams(document.location.search);
+        const wallet_address = params.get("wallet_address");
+        console.log(`Wallet address: ${wallet_address}`);
+        const defaultOrderParameters = {
+          defaultOrderParameters: {
+            ...window.bityConfiguration.exchangeClient.defaultOrderParameters,
+            outputAddressesForPrefilling: wallet_address
+              ? {
+                  NYM: wallet_address,
+                }
+              : undefined,
+          },
+        };
         var finalConfig = Object.assign(
-          {},
-          window.bityConfiguration.exchangeClient
+          window.bityConfiguration.exchangeClient,
+          defaultOrderParameters
         );
 
         finalConfig.shouldAskForLogin = () => false;
@@ -71,7 +83,7 @@
 
         preact.render(
           preact.h(BityPreactExchangeClient.default, finalConfig),
-          root
+          document.querySelector("#root")
         );
       });
     </script>
