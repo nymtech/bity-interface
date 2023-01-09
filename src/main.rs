@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+mod client_config;
 mod error;
 mod ip_check;
 mod shutdown;
@@ -9,10 +10,11 @@ mod utils;
 
 use anyhow::Context;
 use axum::extract::State;
-use axum::http::{header, StatusCode};
+use axum::http::StatusCode;
 use axum::response::IntoResponse;
 use axum::routing::{get, get_service};
-use axum::{middleware, Router};
+use axum::{middleware, Json, Router};
+use client_config::ClientConfig;
 use dotenv::dotenv;
 use ip_check::ip_check;
 use maxminddb::Reader;
@@ -35,7 +37,7 @@ const LOG_LEVELS: &str = "nym_exchange=debug,tower_http=debug";
 #[derive(Debug)]
 pub struct AppState {
     geoip_db: Reader<Vec<u8>>,
-    bity_config: String,
+    bity_config: ClientConfig,
 }
 
 #[tokio::main]
@@ -64,9 +66,12 @@ async fn main() -> anyhow::Result<()> {
 
     let bity_config_path = read_env_var("BITY_CONFIG_PATH", DEFAULT_BITY_CONFIG_PATH);
     debug!("Reading Bity config from {}", &bity_config_path);
-    let bity_config = fs::read_to_string(&bity_config_path)
-        .await
-        .with_context(|| format!("Fail to read {}", &bity_config_path))?;
+    let bity_config: ClientConfig = serde_json::from_slice(
+        &fs::read(&bity_config_path)
+            .await
+            .with_context(|| format!("Fail to read {}", &bity_config_path))?,
+    )
+    .with_context(|| format!("Fail to parse client config {}", &bity_config_path))?;
 
     let db_path = read_env_var("GEOIP_DB_PATH", DEFAULT_DATABASE_PATH);
     debug!("Loading GeoLite2 database {}", &db_path);
@@ -86,7 +91,7 @@ async fn main() -> anyhow::Result<()> {
     // index.html is located in $ASSETS_DIRECTORY
     // GET /            serves index.html
     // GET /assets/*    serves the corresponding static file from $ASSETS_DIRECTORY/*
-    // GET /config.js   replies with a JS script containing Bity config
+    // GET /config      replies with client config in JSON
     // GET /403.html    serves $ASSETS_DIRECTORY/403.html
     // GET /*           fallback to /assets/*
     // GET /assets/file_doesnt_exist fallback to index.html (no 404)
@@ -97,7 +102,7 @@ async fn main() -> anyhow::Result<()> {
         .route_layer(middleware::from_fn_with_state(state.clone(), ip_check));
 
     let app = Router::new()
-        .route("/config.js", get(get_config))
+        .route("/config", get(get_config))
         .route(
             "/403.html",
             get_service(ServeFile::new(format!("{}/403.html", assets_dir)))
@@ -118,14 +123,8 @@ async fn main() -> anyhow::Result<()> {
 }
 
 #[instrument(skip_all, level = "info")]
-pub async fn get_config(State(state): State<Arc<AppState>>) -> impl IntoResponse {
-    (
-        [(header::CONTENT_TYPE, "application/javascript")],
-        format!(
-            "window.bityConfiguration = {{ exchangeClient: JSON.parse(`{}`) }};",
-            state.bity_config
-        ),
-    )
+pub async fn get_config(State(state): State<Arc<AppState>>) -> Json<ClientConfig> {
+    Json(state.bity_config.clone())
 }
 
 async fn handle_error(_err: io::Error) -> impl IntoResponse {

@@ -8,7 +8,8 @@
   "defaultOrderParameters": {
     "inputCurrency": "BTC",
     "outputCurrency": "NYM",
-    "inputAmount": "0.0002"
+    "inputAmount": "0.0002",
+    "lockOutputAddressWhenPrefilled": false
   },
   "oauthConfig": {
     "authorizationUrl": "https://connect.bity.com/oauth2/auth",

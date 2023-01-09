@@ -9,7 +9,6 @@
     <link rel="stylesheet" type="text/css" href="/assets/index.css" />
 
     <script src="/assets/preact.min.js"></script>
-    <script src="/config.js"></script>
     <script src="/assets/bity-preact-exchange-client.js"></script>
     <!-- Matomo -->
     <script>
@@ -46,7 +45,7 @@
     </script>
 
     <script>
-      window.addEventListener("load", function () {
+      window.addEventListener("load", async function () {
         // Prevent Google Translate from creating duplicate text.
         const ib = Element.prototype.insertBefore;
         Element.prototype.insertBefore = function (child, ref) {
@@ -57,32 +56,40 @@
           return ib.apply(this, arguments);
         };
 
+        let config;
+        try {
+          const res = await fetch("http://localhost:4000/config");
+          if (res.ok) {
+            config = await res.json();
+          } else {
+            console.error("config request failed");
+            return;
+          }
+        } catch (e) {
+          console.error("config request failed");
+          return;
+        }
+
         const params = new URLSearchParams(document.location.search);
         const wallet_address = params.get("wallet_address");
-        console.log(`Wallet address: ${wallet_address}`);
-        const defaultOrderParameters = {
-          defaultOrderParameters: {
-            ...window.bityConfiguration.exchangeClient.defaultOrderParameters,
-            outputAddressesForPrefilling: wallet_address
-              ? {
-                  NYM: wallet_address,
-                }
-              : undefined,
-          },
-        };
-        var finalConfig = Object.assign(
-          window.bityConfiguration.exchangeClient,
-          defaultOrderParameters
-        );
+        if (wallet_address) {
+          config.defaultOrderParameters = {
+            ...config.defaultOrderParameters,
+            outputAddressesForPrefilling: { NYM: wallet_address },
+          };
+        }
 
-        finalConfig.shouldAskForLogin = () => false;
-        finalConfig.oauthConfig.onAccessTokenExpiry = (r) =>
+        // put the config into window as PreactExchangeClient maybe relies on it
+        window.bityConfiguration = { exchangeClient: config };
+
+        config.shouldAskForLogin = () => false;
+        config.oauthConfig.onAccessTokenExpiry = (r) =>
           window.parent.postMessage("badAuth", "*");
-        finalConfig.oauthConfig.onInvalidGrant = (r) =>
+        config.oauthConfig.onInvalidGrant = (r) =>
           window.parent.postMessage("badAuth", "*");
 
         preact.render(
-          preact.h(BityPreactExchangeClient.default, finalConfig),
+          preact.h(BityPreactExchangeClient.default, config),
           document.querySelector("#root")
         );
       });
