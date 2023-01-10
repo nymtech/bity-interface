@@ -58,7 +58,7 @@
 
         let config;
         try {
-          const res = await fetch("http://localhost:4000/config");
+          const res = await fetch("https://buy.nymtech.net/config");
           if (res.ok) {
             config = await res.json();
           } else {
