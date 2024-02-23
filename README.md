@@ -30,18 +30,18 @@ docker compose up -d
 cargo run
 ```
 
-## Build
-
-```shell
-cargo build --release
-```
-
 NOTE: to run the UI locally, first change in `assets/index.html`
 the config URL:
 
 ```
-          // const res = await fetch("https://buy.nymtech.net/config");
-          const res = await fetch("http://localhost:4000/config");
+ // const res = await fetch("https://buy.nymtech.net/config");
+ const res = await fetch("http://localhost:4000/config");
+```
+
+## Build
+
+```shell
+cargo build --release
 ```
 
 ## Production
