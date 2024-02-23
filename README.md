@@ -36,6 +36,14 @@ cargo run
 cargo build --release
 ```
 
+NOTE: to run the UI locally, first change in `assets/index.html`
+the config URL:
+
+```
+          // const res = await fetch("https://buy.nymtech.net/config");
+          const res = await fetch("http://localhost:4000/config");
+```
+
 ## Production
 
 The binary server needs access to:
@@ -47,3 +55,11 @@ The binary server needs access to:
 Paths to these files can be provided respectively by the following
 env variables: `ASSETS_DIRECTORY`, `BITY_CONFIG_PATH` and
 `GEOIP_DB_PATH`.
+
+#### How it is built
+
+In `assets` folder some files have been imported (copied as it is) from `@bity/preact-exchange-client` sources
+- `bity-preact-exchange-client.js`
+- `index.css`
+
+`bity.css` has been imported from `@bity/styles` sources
