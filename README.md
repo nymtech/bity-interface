@@ -58,7 +58,7 @@ env variables: `ASSETS_DIRECTORY`, `BITY_CONFIG_PATH` and
 
 #### How it is built
 
-In `assets` folder some files have been imported (copied as it is) from `@bity/preact-exchange-client` sources
+In `assets` folder some files have been imported (copied as is) from `@bity/preact-exchange-client` sources
 - `bity-preact-exchange-client.js`
 - `index.css`
 
