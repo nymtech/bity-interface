@@ -58,7 +58,9 @@
 
         let config;
         try {
-          const res = await fetch("https://buy.nymtech.net/config");
+          // const res = await fetch("https://buy.nymtech.net/config");
+          // local dev set up running in docker..
+          const res = await fetch("http://0.0.0.0:4000/config");
           if (res.ok) {
             config = await res.json();
           } else {

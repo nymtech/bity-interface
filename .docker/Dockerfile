@@ -5,19 +5,22 @@
 # source https://hub.docker.com/_/rust
 
 # Build stage
-FROM rust:slim as builder
+# This configuration is for arm64 
+FROM --platform=linux/arm64 rust:slim as builder
 WORKDIR /opt/server
 COPY . .
-RUN cargo build --release --locked
- 
+
+RUN rustup target add aarch64-unknown-linux-musl && \
+    cargo build --release --locked --target aarch64-unknown-linux-musl
+
 # Run stage
-FROM debian:buster-slim as runner
+FROM --platform=linux/arm64 debian:bullseye-slim as runner
 WORKDIR /opt/server
 
 ARG port=4000
 ENV PORT $port
 
-COPY --from=builder /opt/server/target/release/nym-exchange /usr/local/bin/nym-exchange
+COPY --from=builder /opt/server/target/aarch64-unknown-linux-musl/release/nym-exchange /usr/local/bin/nym-exchange
 
 VOLUME /opt/server/geo_ip/db.mmdb
 VOLUME /opt/server/bity/config.json

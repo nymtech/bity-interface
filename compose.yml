@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   server:
     build:
@@ -9,27 +11,36 @@ services:
     restart: unless-stopped
     environment:
       RUST_LOG: ${RUST_LOG}
+      GEOIP_DB_PATH: /opt/server/geo_ip/GeoLite2-Country.mmdb
     ports:
       - "${PORT}:${PORT}"
     volumes:
-      - ${GEOIP_DB_DIRECTORY}/GeoLite2-Country.mmdb:/opt/server/geo_ip/db.mmdb
+      - geodatabase:/opt/server/geo_ip
       - ./assets:/opt/server/assets
       - ./bity_config.json:/opt/server/bity/config.json
     networks:
       - nym-bity
+    depends_on: 
+      - geoipupdate
 
   geoipupdate:
     image: maxmindinc/geoipupdate
     restart: unless-stopped
+    volumes:
+      - type: volume
+        source: geodatabase
+        target: /usr/share/GeoIP
     environment:
+      GEOIPUPDATE_DB_DIR: /usr/share/GeoIP
       GEOIPUPDATE_ACCOUNT_ID: ${GEOIPUPDATE_ACCOUNT_ID}
       GEOIPUPDATE_LICENSE_KEY: ${GEOIPUPDATE_LICENSE_KEY}
       GEOIPUPDATE_EDITION_IDS: ${GEOIPUPDATE_EDITION_IDS}
       GEOIPUPDATE_FREQUENCY: ${GEOIPUPDATE_FREQUENCY}
-    volumes:
-      - ${GEOIP_DB_DIRECTORY}:/usr/share/GeoIP
     networks:
       - nym-bity
 
 networks:
   nym-bity:
+
+volumes:
+  geodatabase:
