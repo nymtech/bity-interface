@@ -11,7 +11,7 @@ COPY . .
 RUN cargo build --release --locked
  
 # Run stage
-FROM debian:buster-slim as runner
+FROM debian:bookworm-slim as runner
 WORKDIR /opt/server
 
 ARG port=4000
