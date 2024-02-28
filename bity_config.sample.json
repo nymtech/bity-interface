@@ -3,8 +3,8 @@
   "exchangeApiUrl": "https://exchange.api.bity.com",
   "legacyV2ApiUrl": "",
   "bityDashboardUrl": "",
-  "restrictCurrenciesToSend": ["BTC"],
-  "restrictCurrenciesToReceive": ["NYM"],
+  "restrictCurrenciesToSend": ["BTC", "NYM"],
+  "restrictCurrenciesToReceive": ["BTC", "NYM"],
   "defaultOrderParameters": {
     "inputCurrency": "BTC",
     "outputCurrency": "NYM",
